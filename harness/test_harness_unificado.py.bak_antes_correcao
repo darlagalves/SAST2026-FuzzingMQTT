@@ -1,0 +1,485 @@
+"""
+Harness unificado para comparar fuzzers MQTT contra o Home Assistant.
+
+Uso básico:
+    FUZZER_TOOL=boofuzz HA_TOKEN='...' python -m unittest test_harness_unificado.py
+
+O objetivo é manter o MESMO oráculo e o MESMO procedimento experimental
+para todas as ferramentas. A única parte que muda é o adaptador do fuzzer.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+import shlex
+import subprocess
+import sys
+import time
+import unittest
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+import requests
+
+
+# ---------------------------------------------------------------------------
+# Configuração geral do ambiente
+# ---------------------------------------------------------------------------
+ROOT_DIR = Path(__file__).resolve().parent
+RESULTS_DIR = ROOT_DIR / "results"
+RESULTS_DIR.mkdir(exist_ok=True)
+
+HA_CONTAINER = os.environ.get("HA_CONTAINER", "ha-test")
+HA_BASE_URL = os.environ.get("HA_BASE_URL", "http://127.0.0.1:8123").rstrip("/")
+HA_ENTITY_ID = os.environ.get("HA_ENTITY_ID", "sensor.sensor_fuzzing")
+HA_STATE_URL = f"{HA_BASE_URL}/api/states/{HA_ENTITY_ID}"
+HA_TOKEN = os.environ.get("HA_TOKEN", "")
+
+MQTT_HOST = os.environ.get("MQTT_HOST", "127.0.0.1")
+MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
+MQTT_TOPIC = os.environ.get("MQTT_TOPIC", "homeassistant/sensor/temp")
+MQTT_PAYLOAD = os.environ.get("MQTT_PAYLOAD", '{"temperature": 22.5}')
+
+FUZZER_TOOL = os.environ.get("FUZZER_TOOL", "scapy").lower()
+FUZZ_DURATION = int(os.environ.get("FUZZ_DURATION", "60"))
+FUZZ_TIMEOUT = int(os.environ.get("FUZZ_TIMEOUT", str(FUZZ_DURATION + 10)))
+FUZZ_SEED = os.environ.get("FUZZ_SEED", "1")
+
+STARTUP_SLEEP = int(os.environ.get("STARTUP_SLEEP", "12"))
+POST_FUZZ_SLEEP = int(os.environ.get("POST_FUZZ_SLEEP", "3"))
+CANARY_WAIT = int(os.environ.get("CANARY_WAIT", "8"))
+
+BASELINE_FILE = Path(os.environ.get("BASELINE_FILE", ROOT_DIR / "baseline.json"))
+EXPECTED_STATE = os.environ.get("EXPECTED_STATE", "")
+
+LOG_PATTERNS = [
+    p.strip()
+    for p in os.environ.get(
+        "ORACLE_LOG_PATTERNS",
+        "Traceback,Exception,ERROR (MainThread) [homeassistant.components.mqtt]",
+    ).split(",")
+    if p.strip()
+]
+
+HEADERS = {
+    "Authorization": f"Bearer {HA_TOKEN}",
+    "Content-Type": "application/json",
+}
+
+
+@dataclass
+class FuzzerAdapter:
+    name: str
+    command: list[str]
+    cwd: Path | None = None
+    uses_timeout_as_success: bool = True
+
+
+def _as_bool(value: str | None, default: bool = False) -> bool:
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "sim", "on"}
+
+
+def _load_baseline_state() -> str | None:
+    if EXPECTED_STATE:
+        return EXPECTED_STATE
+
+    if not BASELINE_FILE.exists():
+        return None
+
+    with BASELINE_FILE.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    state = data.get("state")
+    return None if state is None else str(state)
+
+
+def _default_adapter(tool: str) -> FuzzerAdapter:
+    """Mapeia cada ferramenta para um comando padrão, sobrescrevível por env."""
+    custom_cmd = os.environ.get("FUZZER_CMD")
+    custom_cwd = os.environ.get("FUZZER_CWD")
+    if custom_cmd:
+        return FuzzerAdapter(
+            name=tool,
+            command=shlex.split(custom_cmd),
+            cwd=Path(custom_cwd).resolve() if custom_cwd else None,
+        )
+
+    adapters: dict[str, FuzzerAdapter] = {
+        "boofuzz": FuzzerAdapter(
+            name="boofuzz",
+            command=["venv_boofuzz/bin/python", "boofuzz_mqtt.py"],
+            cwd=ROOT_DIR,
+        ),
+        "fume": FuzzerAdapter(
+            name="fume",
+            command=["venv_fume/bin/python", "fuzz.py"],
+            cwd=ROOT_DIR / "FUME-Fuzzing-MQTT-Brokers",
+        ),
+        "mqttgram": FuzzerAdapter(
+            name="mqttgram",
+            command=["sudo", "MQTTGRAM/venv_mqttgram/bin/python", "MQTTGRAM/fuzz.py"],
+            cwd=ROOT_DIR,
+        ),
+        "scapy": FuzzerAdapter(
+            name="scapy",
+            command=[sys.executable, str(ROOT_DIR / "fuzzers" / "scapy_mqtt.py")],
+            cwd=ROOT_DIR,
+        ),
+        # Polymorph/MitMfuzzer normalmente depende do seu script/wrapper local.
+        # Exemplo:
+        #   FUZZER_TOOL=mitm FUZZER_CMD="python3 mitm_wrapper.py" python -m unittest ...
+        "mitm": FuzzerAdapter(
+            name="mitm",
+            command=shlex.split(os.environ.get("MITM_CMD", "python3 mitm_wrapper.py")),
+            cwd=ROOT_DIR,
+        ),
+        "polymorph": FuzzerAdapter(
+            name="polymorph",
+            command=shlex.split(os.environ.get("POLYMORPH_CMD", "python3 mitm_wrapper.py")),
+            cwd=ROOT_DIR,
+        ),
+    }
+
+    if tool not in adapters:
+        raise ValueError(
+            f"FUZZER_TOOL={tool!r} desconhecido. Use um destes: "
+            f"{', '.join(sorted(adapters))}; ou informe FUZZER_CMD."
+        )
+    return adapters[tool]
+
+
+def run_cmd(
+    cmd: list[str],
+    *,
+    timeout: int | None = None,
+    cwd: Path | None = None,
+    env: dict[str, str] | None = None,
+    check: bool = False,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        cmd,
+        cwd=str(cwd) if cwd else None,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+        check=check,
+    )
+
+
+def docker_status() -> str:
+    proc = run_cmd(
+        ["docker", "inspect", "-f", "{{.State.Status}}", HA_CONTAINER],
+        timeout=10,
+    )
+    return proc.stdout.strip()
+
+
+def wait_for_container_running(timeout: int = 60) -> str:
+    start = time.time()
+    last_status = "unknown"
+    while time.time() - start < timeout:
+        last_status = docker_status()
+        if last_status == "running":
+            return last_status
+        time.sleep(1)
+    return last_status
+
+
+def normalize_state(state: Any) -> str | None:
+    if state in (None, "", "None"):
+        return None
+    return str(state)
+
+
+def get_ha_state() -> tuple[str | None, dict[str, Any] | None, str | None]:
+    if not HA_TOKEN:
+        return None, None, "HA_TOKEN ausente; oráculo de estado desativado"
+
+    try:
+        response = requests.get(HA_STATE_URL, headers=HEADERS, timeout=5)
+    except requests.RequestException as exc:
+        return None, None, f"EXCECAO_HTTP: {exc}"
+
+    if response.status_code == 401:
+        return None, None, "HTTP_401_TOKEN_INVALIDO"
+    if response.status_code != 200:
+        return None, None, f"HTTP_{response.status_code}"
+
+    try:
+        payload = response.json()
+    except ValueError:
+        return None, None, "RESPOSTA_NAO_JSON"
+
+    return normalize_state(payload.get("state")), payload, None
+
+
+def wait_for_state(timeout: int = CANARY_WAIT) -> tuple[str | None, dict[str, Any] | None, str | None]:
+    start = time.time()
+    last: tuple[str | None, dict[str, Any] | None, str | None] = (None, None, None)
+    while time.time() - start < timeout:
+        last = get_ha_state()
+        state, payload, err = last
+        if err:
+            return last
+        if state not in (None, "unknown", "unavailable"):
+            return last
+        time.sleep(0.5)
+    return last
+
+
+def publish_canary() -> subprocess.CompletedProcess[str]:
+    """Publica uma mensagem válida e determinística no tópico monitorado pelo HA."""
+    return run_cmd(
+        [
+            "mosquitto_pub",
+            "-h",
+            MQTT_HOST,
+            "-p",
+            str(MQTT_PORT),
+            "-t",
+            MQTT_TOPIC,
+            "-m",
+            MQTT_PAYLOAD,
+        ],
+        timeout=10,
+        check=True,
+    )
+
+
+def collect_logs_since(since_epoch: str) -> str:
+    proc = run_cmd(
+        ["docker", "logs", "--since", since_epoch, HA_CONTAINER],
+        timeout=20,
+    )
+    return proc.stdout + proc.stderr
+
+
+def find_log_evidence(logs: str) -> dict[str, bool]:
+    evidence: dict[str, bool] = {}
+    for pattern in LOG_PATTERNS:
+        try:
+            evidence[pattern] = re.search(pattern, logs) is not None
+        except re.error:
+            evidence[pattern] = pattern in logs
+    return evidence
+
+
+class TestMQTTFuzzHarness(unittest.TestCase):
+    """Teste único e parametrizável: muda-se só FUZZER_TOOL/FUZZER_CMD."""
+
+    def setUp(self) -> None:
+        self.adapter = _default_adapter(FUZZER_TOOL)
+        self.expected_state = _load_baseline_state()
+        self.start_time = str(int(time.time()))
+        self.campaign_id = f"{self.adapter.name}_{self.start_time}_{FUZZ_SEED}"
+
+        subprocess.run(
+            ["docker", "restart", HA_CONTAINER],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        status = wait_for_container_running(timeout=60)
+        if status != "running":
+            self.fail(f"Home Assistant não ficou running após restart: status={status}")
+
+        # Mantém compatibilidade com seus testes anteriores, mas deixa configurável.
+        time.sleep(STARTUP_SLEEP)
+
+        # Canary inicial: garante que o tópico válido realmente alcança a entidade.
+        if _as_bool(os.environ.get("PUBLISH_INITIAL_CANARY"), default=True):
+            publish_canary()
+            time.sleep(1)
+
+    def run_fuzzer(self) -> dict[str, Any]:
+        env = os.environ.copy()
+        env.update(
+            {
+                "MQTT_HOST": MQTT_HOST,
+                "MQTT_PORT": str(MQTT_PORT),
+                "MQTT_TOPIC": MQTT_TOPIC,
+                "MQTT_PAYLOAD": MQTT_PAYLOAD,
+                "FUZZ_DURATION": str(FUZZ_DURATION),
+                "FUZZ_SEED": str(FUZZ_SEED),
+                "CAMPAIGN_ID": self.campaign_id,
+                "BOOFUZZ_DB_PATH": str(RESULTS_DIR / f"boofuzz_{self.campaign_id}.db"),
+            }
+        )
+
+        started = time.time()
+        try:
+            proc = run_cmd(
+                self.adapter.command,
+                cwd=self.adapter.cwd,
+                env=env,
+                timeout=FUZZ_TIMEOUT,
+                check=False,
+            )
+            return {
+                "command": self.adapter.command,
+                "cwd": str(self.adapter.cwd) if self.adapter.cwd else None,
+                "returncode": proc.returncode,
+                "timeout": False,
+                "duration_sec": round(time.time() - started, 3),
+                "stdout_tail": proc.stdout[-4000:],
+                "stderr_tail": proc.stderr[-4000:],
+            }
+        except subprocess.TimeoutExpired as exc:
+            # FUME/BooFuzz/MQTTGRAM podem ser campanhas longas ou infinitas;
+            # timeout é mecanismo de parada, não necessariamente erro do harness.
+            return {
+                "command": self.adapter.command,
+                "cwd": str(self.adapter.cwd) if self.adapter.cwd else None,
+                "returncode": None,
+                "timeout": True,
+                "duration_sec": round(time.time() - started, 3),
+                "stdout_tail": (exc.stdout or "")[-4000:] if isinstance(exc.stdout, str) else "",
+                "stderr_tail": (exc.stderr or "")[-4000:] if isinstance(exc.stderr, str) else "",
+            }
+
+    def evaluate_oracle(self) -> dict[str, Any]:
+        status = docker_status()
+        crashed = status != "running"
+
+        logs = collect_logs_since(self.start_time)
+        log_evidence = find_log_evidence(logs)
+        log_divergence = any(log_evidence.values())
+
+        state_divergence = False
+        state_detail: dict[str, Any] = {
+            "enabled": bool(self.expected_state),
+            "expected": self.expected_state,
+            "actual": None,
+            "error": None,
+        }
+
+        # Se o container caiu, o nível 1 já detectou a falha.
+        # Não tente publicar canário nem consultar estado, porque isso gera L3_4=True redundante.
+        if crashed:
+            state_detail["enabled"] = False
+            state_detail["error"] = "skip_l3_4_container_down"
+
+        elif self.expected_state:
+            # Canary final: compara comportamento determinístico pós-fuzzing.
+            try:
+                publish_canary()
+                state, payload, err = wait_for_state(CANARY_WAIT)
+                state_detail.update({"actual": state, "error": err, "raw": payload})
+
+                if err:
+                    state_divergence = True
+                else:
+                    state_divergence = normalize_state(state) != normalize_state(self.expected_state)
+
+            except subprocess.CalledProcessError as exc:
+                state_divergence = True
+                state_detail["error"] = f"mosquitto_pub_failed: {exc}"
+
+        else:
+            state_detail["error"] = (
+                f"baseline ausente ({BASELINE_FILE}) e EXPECTED_STATE não definido; "
+                "níveis 3/4 desativados"
+            )
+
+        return {
+            "level1_process": {"divergence": crashed, "status": status},
+            "level2_logs": {
+                "divergence": log_divergence,
+                "patterns": log_evidence,
+                "log_tail": logs[-4000:],
+            },
+            "level3_4_state": {"divergence": state_divergence, **state_detail},
+            "divergence": crashed or log_divergence or state_divergence,
+        }
+
+    def write_result(self, fuzzer_result: dict[str, Any], oracle: dict[str, Any]) -> Path:
+        result = {
+            "campaign_id": self.campaign_id,
+            "fuzzer_tool": self.adapter.name,
+            "fuzz_seed": FUZZ_SEED,
+            "fuzz_duration": FUZZ_DURATION,
+            "ha_container": HA_CONTAINER,
+            "ha_entity_id": HA_ENTITY_ID,
+            "mqtt_host": MQTT_HOST,
+            "mqtt_port": MQTT_PORT,
+            "mqtt_topic": MQTT_TOPIC,
+            "mqtt_payload": MQTT_PAYLOAD,
+            "oracle": oracle,
+            "fuzzer_result": fuzzer_result,
+        }
+        out = RESULTS_DIR / f"result_{self.campaign_id}.json"
+        with out.open("w", encoding="utf-8") as f:
+            json.dump(result, f, indent=2, ensure_ascii=False)
+        return out
+
+    def run_fuzzer_with_monitoring(self):
+        fuzzer_cmd = os.environ["FUZZER_CMD"]
+        duration = int(os.environ.get("FUZZ_DURATION", "60"))
+
+        start = time.monotonic()
+
+        proc = subprocess.Popen(
+            fuzzer_cmd,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            env=os.environ.copy(),
+        )
+
+        try:
+            while time.monotonic() - start < duration:
+                crashed, status = self.check_nivel1()
+                if crashed:
+                    return True, "level_1_process", status, time.monotonic() - start
+
+                log_div, logs = self.check_nivel2()
+                if log_div:
+                    return True, "level_2_logs", "log_divergence", time.monotonic() - start
+
+                estado_anomalo, estado = self.check_nivel3_4()
+                if estado_anomalo:
+                    return True, "level_3_4_state", estado, time.monotonic() - start
+
+                if proc.poll() is not None:
+                    break
+
+                time.sleep(0.5)
+
+            return False, "none", "no_divergence", time.monotonic() - start
+
+        finally:
+            if proc.poll() is None:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+
+
+    def test_fuzzer_detecta_mutante(self):
+        self.start_time = str(int(time.time()))
+
+        self.restart_ha()
+        self.publish_canary()
+        self.wait_for_baseline_state()
+
+        killed, oracle_level, detail, elapsed = self.run_fuzzer_with_monitoring()
+
+        self.assertFalse(
+            killed,
+            (
+                f"Mutante morto: oracle={oracle_level}, "
+                f"detail={detail}, time_to_kill={elapsed:.2f}s"
+            )
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

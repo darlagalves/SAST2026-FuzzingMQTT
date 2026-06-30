@@ -1,0 +1,47 @@
+{
+  "campaign_id": "scapy_1782351267_1",
+  "fuzzer_tool": "scapy",
+  "fuzz_seed": "1",
+  "fuzz_duration": 60,
+  "ha_container": "ha-test",
+  "ha_entity_id": "sensor.sensor_fuzzing",
+  "mqtt_host": "127.0.0.1",
+  "mqtt_port": 1883,
+  "mqtt_topic": "homeassistant/sensor/temp",
+  "mqtt_payload": "{\"temperature\": 22.5}",
+  "oracle": {
+    "level1_process": {
+      "divergence": true,
+      "status": "exited"
+    },
+    "level2_logs": {
+      "divergence": false,
+      "patterns": {
+        "Traceback": false,
+        "Exception": false,
+        "ERROR (MainThread) [homeassistant.components.mqtt]": false
+      },
+      "log_tail": "s6-rc: info: service legacy-services: stopping\ns6-rc: info: service s6rc-oneshot-runner: starting\ns6-rc: info: service s6rc-oneshot-runner successfully started\ns6-rc: info: service fix-attrs: starting\ns6-rc: info: service fix-attrs successfully started\ns6-rc: info: service legacy-cont-init: starting\ns6-rc: info: service legacy-cont-init successfully started\ns6-rc: info: service legacy-services: starting\nservices-up: info: copying legacy longrun home-assistant (no readiness notification)\ns6-rc: info: service legacy-services successfully started\ns6-rc: info: service legacy-services: stopping\n[01:34:43] INFO: \u001b[32mHome Assistant Core finish process exit code 0\u001b[0m\n[01:34:43] INFO: \u001b[32mHome Assistant Core service shutdown\u001b[0m\ns6-rc: info: service legacy-services successfully stopped\ns6-rc: info: service legacy-cont-init: stopping\ns6-rc: info: service legacy-cont-init successfully stopped\ns6-rc: info: service fix-attrs: stopping\ns6-rc: info: service fix-attrs successfully stopped\ns6-rc: info: service s6rc-oneshot-runner: stopping\ns6-rc: info: service s6rc-oneshot-runner successfully stopped\n"
+    },
+    "level3_4_state": {
+      "divergence": true,
+      "enabled": true,
+      "expected": "22.5",
+      "actual": null,
+      "error": "EXCECAO_HTTP: HTTPConnectionPool(host='127.0.0.1', port=8123): Max retries exceeded with url: /api/states/sensor.sensor_fuzzing (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7d6536f52ea0>: Failed to establish a new connection: [Errno 111] Connection refused'))",
+      "raw": null
+    },
+    "divergence": true
+  },
+  "fuzzer_result": {
+    "command": [
+      "/home/darla/experimento/harness/adapters/validation/run_force_crash.sh"
+    ],
+    "cwd": null,
+    "returncode": 0,
+    "timeout": false,
+    "duration_sec": 3.406,
+    "stdout_tail": "[VALIDAÇÃO] Forçando parada do container ha-test\nha-test\n",
+    "stderr_tail": ""
+  }
+}

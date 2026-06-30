@@ -1,0 +1,10 @@
+{
+  "entity_id": "sensor.sensor_fuzzing",
+  "mqtt_topic": "homeassistant/sensor/temp",
+  "mqtt_payload": "{\"temperature\": 22.5}",
+  "state": "22.5",
+  "attributes": {
+    "friendly_name": "Sensor Fuzzing"
+  },
+  "collected_at_epoch": 1782404956
+}

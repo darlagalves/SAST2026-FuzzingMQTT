@@ -1,0 +1,62 @@
+{
+  "campaign_id": "scapy_1782333393_1",
+  "fuzzer_tool": "scapy",
+  "fuzz_seed": "1",
+  "fuzz_duration": 60,
+  "ha_container": "ha-test",
+  "ha_entity_id": "sensor.sensor_fuzzing",
+  "mqtt_host": "127.0.0.1",
+  "mqtt_port": 1883,
+  "mqtt_topic": "homeassistant/sensor/temp",
+  "mqtt_payload": "{\"temperature\": 22.5}",
+  "oracle": {
+    "level1_process": {
+      "divergence": false,
+      "status": "running"
+    },
+    "level2_logs": {
+      "divergence": false,
+      "patterns": {
+        "Traceback": false,
+        "Exception": false,
+        "ERROR (MainThread) [homeassistant.components.mqtt]": false
+      },
+      "log_tail": "026-06-24 20:37:45.251 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'dict object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:45.600 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:45.659 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:45.712 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[33m2026-06-24 20:37:45.990 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'dict object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:46.109 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:46.169 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:46.226 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[33m2026-06-24 20:37:46.340 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'dict object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:46.573 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[33m2026-06-24 20:37:46.968 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'dict object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[33m2026-06-24 20:37:47.143 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'list object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[33m2026-06-24 20:37:47.319 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'list object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[33m2026-06-24 20:37:47.601 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'dict object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:47.658 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:47.768 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:47.881 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:47.997 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:48.053 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[31m2026-06-24 20:37:48.218 ERROR (MainThread) [homeassistant.helpers.template] Template variable error: 'value_json' is undefined when rendering '{{ value_json.temperature }}'\u001b[0m\n\u001b[33m2026-06-24 20:37:48.615 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'dict object' has no attribute 'temperature' when rendering '{{ value_json.temperature }}'\u001b[0m\n"
+    },
+    "level3_4_state": {
+      "divergence": false,
+      "enabled": true,
+      "expected": "22.5",
+      "actual": "22.5",
+      "error": null,
+      "raw": {
+        "entity_id": "sensor.sensor_fuzzing",
+        "state": "22.5",
+        "attributes": {
+          "friendly_name": "Sensor Fuzzing"
+        },
+        "last_changed": "2026-06-24T20:37:52.046947+00:00",
+        "last_reported": "2026-06-24T20:37:52.046947+00:00",
+        "last_updated": "2026-06-24T20:37:52.046947+00:00",
+        "context": {
+          "id": "01KVXNMZ9E8SWA5VMDR0PFXPSV",
+          "parent_id": null,
+          "user_id": null
+        }
+      }
+    },
+    "divergence": false
+  },
+  "fuzzer_result": {
+    "command": [
+      "/usr/bin/python3",
+      "/home/darla/experimento/harness/fuzzers/scapy_mqtt.py"
+    ],
+    "cwd": "/home/darla/experimento/harness",
+    "returncode": 0,
+    "timeout": false,
+    "duration_sec": 60.098,
+    "stdout_tail": "[SCAPY-ADAPTER] Iniciando fuzzing por 60s\n[SCAPY-ADAPTER] Broker: 127.0.0.1:1883\n[SCAPY-ADAPTER] Topic: homeassistant/sensor/temp\n[SCAPY-ADAPTER] Mensagens enviadas: 1088\n",
+    "stderr_tail": ""
+  }
+}

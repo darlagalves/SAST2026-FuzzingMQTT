@@ -1,0 +1,36 @@
+# Ambientes Python
+venv/
+venv_*/
+.venv/
+__pycache__/
+*.pyc
+
+# Resultados e caches
+resultados_mutmut/
+resultados/
+.mutmut-cache/
+mutants/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs e bancos
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Configs locais e segredos
+.env
+harness/config/experimento.env
+ha_config/
+
+# Código externo / ferramentas clonadas
+ha_source/
+FUME-Fuzzing-MQTT-Brokers/
+MQTTGRAM/
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.swp
