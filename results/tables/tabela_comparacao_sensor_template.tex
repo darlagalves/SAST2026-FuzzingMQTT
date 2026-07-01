@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\caption{Comparação dos resultados de mutação nos módulos \texttt{sensor.py} e \texttt{template.py}.}
+\label{tab:comparacao_sensor_template}
+\begin{tabular}{llrrrrl}
+\hline
+\textbf{Módulo} & \textbf{Fuzzer} & \textbf{Total} & \textbf{Mortos} & \textbf{Sobreviventes} & \textbf{Score (\%)} & \textbf{Status} \\
+\hline
+sensor & boofuzz & 126 & 17 & 109 & 13.49 & válido \\
+sensor & fume & 126 & 19 & 107 & 15.08 & válido \\
+sensor & scapy & 126 & 17 & 109 & 13.49 & válido \\
+template & boofuzz & 1452 & 127 & 1325 & 8.75 & válido \\
+template & fume & 1452 & 127 & 1325 & 8.75 & válido \\
+template & scapy & 1452 & 127 & 1325 & 8.75 & válido \\
+\hline
+\end{tabular}
+\end{table}

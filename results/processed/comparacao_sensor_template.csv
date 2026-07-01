@@ -1,0 +1,7 @@
+module,fuzzer,total,killed,survived,mutation_score,mutation_score_percent,status
+sensor,boofuzz,126,17,109,0.1349,13.49,válido
+sensor,fume,126,19,107,0.1508,15.08,válido
+sensor,scapy,126,17,109,0.1349,13.49,válido
+template,boofuzz,1452,127,1325,0.0875,8.75,válido
+template,fume,1452,127,1325,0.0875,8.75,válido
+template,scapy,1452,127,1325,0.0875,8.75,válido

@@ -1,0 +1,6 @@
+module,classification,count,percent
+sensor,S4_configuracao_nao_exercitada,76,60.32
+sensor,K1_morto_por_trace,19,15.08
+sensor,S2_limitacao_oraculo,11,8.73
+sensor,S1_baixa_atingibilidade,11,8.73
+sensor,S5_tratamento_silencioso,9,7.14

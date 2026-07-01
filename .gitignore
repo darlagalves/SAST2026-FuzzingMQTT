@@ -1,36 +1,45 @@
-# Ambientes Python
+# Python
 venv/
 venv_*/
 .venv/
 __pycache__/
 *.pyc
-
-# Resultados e caches
-resultados_mutmut/
-resultados/
-.mutmut-cache/
-mutants/
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Logs e bancos
-*.log
+# Mutation testing / raw outputs
+.mutmut-cache/
+mutants/
+resultados_mutmut/
+resultados/
+
+# Home Assistant source/config local
+ha_source/
+ha_config/
+
+# External tools cloned locally
+FUME-Fuzzing-MQTT-Brokers/
+MQTTGRAM/
+Polymorph/
+polymorph/
+
+# Local configs / secrets
+.env
+*.env
+harness/config/experimento.env
+baseline.json
+
+# Docker/Mosquitto runtime data
+mosquitto/data/
+mosquitto/log/
 *.db
 *.sqlite
 *.sqlite3
+*.log
 
-# Configs locais e segredos
-.env
-harness/config/experimento.env
-ha_config/
-
-# Código externo / ferramentas clonadas
-ha_source/
-FUME-Fuzzing-MQTT-Brokers/
-MQTTGRAM/
-
-# Arquivos temporários
+# Temporary files
 *.tmp
 *.bak
 *.swp
+.DS_Store

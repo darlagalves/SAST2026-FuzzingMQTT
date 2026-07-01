@@ -1,0 +1,127 @@
+module,mutant_id,killed_count,killed_by,classification,explanation
+sensor,1,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,2,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,3,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,4,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,5,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,6,1,fume,K1_morto_por_trace,Mutante morto por: fume.
+sensor,7,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,8,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,9,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,10,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,11,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,12,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,13,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,14,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,15,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,16,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,17,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,18,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,19,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,20,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,21,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,22,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,23,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,24,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,25,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,26,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,27,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,28,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,29,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,30,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,31,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,32,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,33,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,34,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,35,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,36,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,37,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,38,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,39,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,40,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,41,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,42,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,43,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,44,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,45,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,46,1,fume,K1_morto_por_trace,Mutante morto por: fume.
+sensor,47,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,48,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,49,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,50,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,51,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,52,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,53,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,54,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,55,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,56,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,57,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,58,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,59,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,60,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,61,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,62,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,63,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,64,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,65,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,66,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,67,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,68,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,69,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,70,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,71,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,72,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,73,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,74,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,75,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,76,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,77,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,78,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,79,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,80,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,81,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,82,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,83,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,84,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,85,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,86,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,87,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,88,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,89,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,90,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,91,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,92,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,93,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,94,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,95,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,96,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,97,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,98,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,99,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,100,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,101,0,,S4_configuracao_nao_exercitada,Mutação relacionada a atributos/configuração do sensor não necessariamente exercitados pelo cenário.
+sensor,102,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,103,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,104,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,105,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,106,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,107,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,108,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,109,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,110,0,,S1_baixa_atingibilidade,Mutação condicional; pode depender de branch não alcançado pelos payloads da campanha.
+sensor,111,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,112,0,,S5_tratamento_silencioso,Mutação possivelmente mascarada pelo tratamento silencioso ou fallback do Home Assistant.
+sensor,113,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,114,0,,S2_limitacao_oraculo,Mutação relacionada à transformação de valor; pode não gerar diferença observável no estado final.
+sensor,115,3,boofuzz fume scapy,K1_morto_por_trace,"Mutante morto por: boofuzz, fume, scapy."
+sensor,116,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,117,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,118,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,119,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,120,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,121,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,122,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,123,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,124,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,125,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."
+sensor,126,0,,S4_configuracao_nao_exercitada,"Mutação relacionada a expire_after/expiração do sensor, dependente de configuração específica."

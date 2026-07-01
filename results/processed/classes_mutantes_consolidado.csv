@@ -1,0 +1,7 @@
+classe,rotulo,sensor_count,sensor_percent,template_count,template_percent
+K1_morto_por_trace,K1: morto por trace,19,15.08,127,8.75
+S1_baixa_atingibilidade,S1: baixa atingibilidade,11,8.73,0,0.00
+S2_limitacao_oraculo,S2: limitação do oráculo,11,8.73,114,7.85
+S4_configuracao_nao_exercitada,S4: config. não exercitada,76,60.32,0,0.00
+S5_tratamento_silencioso,S5: tratamento silencioso,9,7.14,229,15.77
+S6_fluxo_generico_template,S6: fluxo genérico template,0,0.00,982,67.63

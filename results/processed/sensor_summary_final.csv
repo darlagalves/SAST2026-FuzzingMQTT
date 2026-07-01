@@ -1,0 +1,6 @@
+fuzzer,corpus_payloads,baseline_trace_lines,killed,survived,mutation_score,oracle_level_3_4_corpus_trace,oracle_none
+boofuzz,11,11,17,109,0.1349206349206349,17,110
+fume,155,100,19,107,0.15079365079365079,19,108
+mqttgram,0,0,2,124,0.015873015873015872,0,0
+mitm,0,0,2,124,0.015873015873015872,0,0
+scapy,200,100,17,109,0.1349206349206349,34,220

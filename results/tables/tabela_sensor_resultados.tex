@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering
+\caption{Resultado da campanha de mutação no módulo \texttt{sensor.py}.}
+\label{tab:resultados_sensor}
+\begin{tabular}{lrrrrl}
+\hline
+\textbf{Fuzzer} & \textbf{Corpus} & \textbf{Mortos} & \textbf{Sobreviventes} & \textbf{Score (\%)} & \textbf{Status} \\
+\hline
+boofuzz & 11 & 17 & 109 & 13.49 & Válido \\
+fume & 155 & 19 & 107 & 15.08 & Válido \\
+mqttgram & 0 & 2 & 124 & 1.59 & Limitado \\
+mitm & 0 & 2 & 124 & 1.59 & Limitado \\
+scapy & 200 & 17 & 109 & 13.49 & Válido \\
+\hline
+\end{tabular}
+\end{table}
