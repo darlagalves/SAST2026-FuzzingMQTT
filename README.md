@@ -1,5 +1,3 @@
-# README corrigido
-
 # SAST2026-FuzzingMQTT
 
 Pacote experimental para avaliação de ferramentas de fuzzing MQTT aplicadas ao Home Assistant, com uso de teste de mutação para medir a efetividade observável dos fuzzers na detecção de comportamentos incorretos introduzidos artificialmente no código do sistema alvo.
