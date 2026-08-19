@@ -1,0 +1,9 @@
+fuzzer=fume
+seed=1
+adapter=/home/darla/experimento/harness/adapters/run_fume_sensor.sh
+duration=60
+mqtt_topic=homeassistant/sensor/temp
+raw_topic_lines=339
+raw_bridge_lines=339
+unique_payloads=205
+corpus_file=resultados_mutmut/corpus/sensor/fume/seed_1/payloads.jsonl

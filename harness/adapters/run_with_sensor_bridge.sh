@@ -7,9 +7,12 @@ if [ "$#" -ne 1 ]; then
 fi
 
 ORIGINAL_ADAPTER="$1"
+REQUESTED_FUZZ_DURATION="${FUZZ_DURATION:-}"
 
 cd /home/darla/experimento
 source harness/config/experimento.env
+
+export FUZZ_DURATION="${REQUESTED_FUZZ_DURATION:-${FUZZ_DURATION:-60}}"
 
 LOG_DIR="/home/darla/experimento/resultados_mutmut/bridge_logs"
 mkdir -p "$LOG_DIR"

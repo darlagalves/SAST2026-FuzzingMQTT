@@ -2,13 +2,21 @@
 set -euo pipefail
 
 cd /home/darla/experimento
+
+REQUESTED_FUZZ_DURATION="${FUZZ_DURATION:-}"
+REQUESTED_REPLAY_LIMIT="${REPLAY_LIMIT:-}"
+REQUESTED_REPLAY_DELAY="${REPLAY_DELAY:-}"
+REQUESTED_MAX_PAYLOADS="${MAX_PAYLOADS:-}"
+
 source harness/config/experimento.env
 
 SEED="${1:-1}"
 
-export FUZZ_DURATION="${FUZZ_DURATION:-60}"
-export REPLAY_LIMIT="${REPLAY_LIMIT:-100}"
-export REPLAY_DELAY="${REPLAY_DELAY:-0.05}"
+export FUZZ_DURATION="${REQUESTED_FUZZ_DURATION:-${FUZZ_DURATION:-60}}"
+export REPLAY_LIMIT="${REQUESTED_REPLAY_LIMIT:-${REPLAY_LIMIT:-100}}"
+export REPLAY_DELAY="${REQUESTED_REPLAY_DELAY:-${REPLAY_DELAY:-0.05}}"
+export MAX_PAYLOADS="${REQUESTED_MAX_PAYLOADS:-${MAX_PAYLOADS:-1000}}"
+
 
 export CHECK_CORPUS_TRACE=1
 export CHECK_STATE_DURING_FUZZ=0
@@ -22,7 +30,7 @@ ADAPTERS[mqttgram]="/home/darla/experimento/harness/adapters/run_mqttgram_sensor
 ADAPTERS[mitm]="/home/darla/experimento/harness/adapters/run_mitm_sensor.sh"
 ADAPTERS[scapy]="/home/darla/experimento/harness/adapters/run_scapy_sensor.sh"
 
-FUZZERS=("boofuzz" "fume" "mqttgram" "mitm" "scapy")
+FUZZERS=("boofuzz" "fume" "scapy")
 
 echo "===================================================="
 echo "[FASE 1] Coletando corpora"

@@ -10,13 +10,18 @@ FUZZER_NAME="$1"
 ADAPTER_PATH="$2"
 SEED="$3"
 
+REQUESTED_FUZZ_DURATION="${FUZZ_DURATION:-}"
+REQUESTED_MAX_PAYLOADS="${MAX_PAYLOADS:-}"
+
 cd /home/darla/experimento
 source harness/config/experimento.env
 
 export FUZZER_NAME="$FUZZER_NAME"
 export FUZZER_CMD="$ADAPTER_PATH"
 export FUZZER_SEED="$SEED"
-export FUZZ_DURATION="${FUZZ_DURATION:-60}"
+export FUZZ_DURATION="${REQUESTED_FUZZ_DURATION:-${FUZZ_DURATION:-60}}"
+export MAX_PAYLOADS="${REQUESTED_MAX_PAYLOADS:-${MAX_PAYLOADS:-1000}}"
+
 
 OUT_DIR="resultados_mutmut/corpus/sensor/${FUZZER_NAME}/seed_${SEED}"
 mkdir -p "$OUT_DIR"
@@ -59,6 +64,7 @@ kill "$SUB_PID" 2>/dev/null || true
 python3 - "$RAW_TOPIC" "$RAW_BRIDGE" "$JSONL" <<'PY'
 import json
 import hashlib
+import os
 import sys
 from pathlib import Path
 
@@ -82,7 +88,7 @@ for p in payloads:
     seen.add(h)
     kept.append(p)
 
-MAX_PAYLOADS = 200
+MAX_PAYLOADS = int(os.environ.get("MAX_PAYLOADS", "200"))
 kept = kept[:MAX_PAYLOADS]
 
 with out_path.open("w", encoding="utf-8") as f:
