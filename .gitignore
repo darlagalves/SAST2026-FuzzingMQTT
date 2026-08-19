@@ -1,45 +1,58 @@
 # Python
 venv/
-venv_*/
 .venv/
+venv_*/
 __pycache__/
 *.pyc
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Mutation testing / raw outputs
+# Mutmut
 .mutmut-cache/
 mutants/
-resultados_mutmut/
-resultados/
+mutmut-cache/
+setup.cfg
+setup.cfg.backup_*
 
-# Home Assistant source/config local
+# Home Assistant local state
+ha_config/.storage/
+ha_config/home-assistant.log*
+ha_config/*.db
+ha_config/*.db-*
+ha_config/secrets.yaml
+ha_config/known_devices.yaml
+
+# Local Home Assistant source copy
 ha_source/
-ha_config/
 
-# External tools cloned locally
+# Secrets and local env
+*.env
+!*.example.env
+harness/config/experimento.env
+harness/config/secrets.env
+secrets.env
+
+# Generated results / raw outputs
+resultados/
+resultados_mutmut/
+resultados_mutmut_debug/
+backups_resultados/
+fuzzing_outputs/
+relatorio_mitm_sensor/
+html/
+
+# Third-party/local tools
 FUME-Fuzzing-MQTT-Brokers/
 MQTTGRAM/
-Polymorph/
-polymorph/
+SGANFuzz/
+mbfuzzer_artifact/
+mqtt_fuzz_harness/
 
-# Local configs / secrets
-.env
-*.env
-harness/config/experimento.env
-baseline.json
-
-# Docker/Mosquitto runtime data
-mosquitto/data/
-mosquitto/log/
-*.db
-*.sqlite
-*.sqlite3
+# Temporary/system files
 *.log
-
-# Temporary files
-*.tmp
-*.bak
-*.swp
-.DS_Store
+*.tar
+*.tar.gz
+*.zip
+*.Zone.Identifier
+" "

@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REQUESTED_REPLAY_LIMIT="${REPLAY_LIMIT:-}"
+REQUESTED_REPLAY_DELAY="${REPLAY_DELAY:-}"
+
 cd /home/darla/experimento
 source harness/config/experimento.env
 
 SEED="${1:-1}"
 
-export REPLAY_LIMIT="${REPLAY_LIMIT:-100}"
-export REPLAY_DELAY="${REPLAY_DELAY:-0.05}"
+export REPLAY_LIMIT="${REQUESTED_REPLAY_LIMIT:-${REPLAY_LIMIT:-100}}"
+export REPLAY_DELAY="${REQUESTED_REPLAY_DELAY:-${REPLAY_DELAY:-0.05}}"
 export RESET_PAYLOAD='{"temperature": 22.5}'
 
 REPLAYER="/home/darla/experimento/harness/adapters/run_replay_sensor_corpus_semantic.py"

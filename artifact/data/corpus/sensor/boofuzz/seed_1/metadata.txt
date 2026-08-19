@@ -1,0 +1,9 @@
+fuzzer=boofuzz
+seed=1
+adapter=/home/darla/experimento/harness/adapters/run_boofuzz_sensor.sh
+duration=60
+mqtt_topic=homeassistant/sensor/temp
+raw_topic_lines=11
+raw_bridge_lines=0
+unique_payloads=11
+corpus_file=resultados_mutmut/corpus/sensor/boofuzz/seed_1/payloads.jsonl
